@@ -17,4 +17,5 @@ osx:
 #$(BIN): $(MAINSRC)
 #	g++ $(MAINSRC) $(SDL2CFLAGS) -o $(BIN) $(SDL2LIBS)
 #commented out until I know what the hell its doin
-run: $(BIN)
+run:
+	$(BIN)
