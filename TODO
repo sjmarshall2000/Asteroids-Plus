@@ -5,3 +5,12 @@ want:
     sounds
     nice sprites 
      - add new image format library (allow png, gif, etc.)
+
+
+
+Next Steps:
+
+make rotational acceleration & drag
+add text to screen
+
+shooting
