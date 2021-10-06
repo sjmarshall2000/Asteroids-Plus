@@ -15,7 +15,8 @@ class Particle {
   double x,y,vx,vy,ax,ay;
 
   double drag;
-  
+  double forwardAccel;
+  bool isMovingForward = false;
 
   
   int minx,miny,maxx,maxy;
@@ -72,6 +73,12 @@ class Particle {
   void rotate(double dTheta){
     setDirection(direction + dTheta);
   }
+  void goForward(){
+    isMovingForward = true;
+  }
+  void stopGoingForward(){
+    isMovingForward = false;
+  }
 
   
   
@@ -79,7 +86,8 @@ class Particle {
            SDL_Rect *newSrc,
            double newx=0.0,double newy=0.0,
            double newvx=0.0,double newvy=0.0,
-           double newax=0.0,double neway=0.0) {
+           double newax=0.0,double neway=0.0, 
+           double newdrag=0.0, double newforwardaccel=0.0) {
 	  src=newSrc;
 	  ren=newRen;
 	  a=newA;
@@ -95,6 +103,8 @@ class Particle {
       vy=newvy; // px/s
       ax=newax;
       ay=neway;  // px/s/s
+      drag=newdrag;
+      forwardAccel = newforwardaccel;
       setBound();
   }
   void setBound(int newMinX=0,int newMinY=0,int newMaxX=0,int newMaxY=0) {
@@ -106,19 +116,35 @@ class Particle {
   virtual void collision() {
   }
   void update(double dt) {
+    int spritewidth = 32;
+    int half = spritewidth / 2;
+
 	  if (maxx!=minx) {
-		  if (x<=minx) { vx=-vx; x=minx; collision();}
-		  if (x>=maxx) { vx=-vx; x=maxx; collision();}
+		  if (x<minx-half) { x=maxx-half; collision();}
+		  if (x>maxx-half) { x=minx-half; collision();}
 	  }
 	  if (maxy!=miny) {
-		  if (y<=miny) { vy=-vy; y=miny; collision();}
-		  if (y>=maxy) { vy=-vy; y=maxy; collision();}
-      }
+		  if (y<miny-half) { y=maxy-half; collision();}
+		  if (y>maxy-half) { y=miny-half; collision();}
+    }
+
+    if(isMovingForward){
+      setAccelerationDir(forwardAccel, direction);
+    } else {
+      setAccelerationDir(0, direction);
+    }
+
 	  vx+=ax*dt;
-    if(vx > 0){vx -= drag;}else{vx+=drag;}
-    vy+=ay*dt; 
-    if(vy > 0){vy -= drag;}else{vy+=drag;}
-	  x+=vx*dt;
+    vx *= drag;
+      // if(vx > drag){vx -= drag * vx;}else if(vx < -1 * drag * vx){vx+=drag;}
+    
+    
+    vy+=ay*dt;// - drag; 
+    vy *= drag;
+    // if(vy > drag){vy -= drag * vy;}else if(vy < -1 * drag * vy){vy+=drag;}
+	  
+    
+    x+=vx*dt;
     y+=vy*dt;
 	  dest.x=(int)x;
       dest.y=(int)y;

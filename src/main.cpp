@@ -17,14 +17,17 @@ class MyParticle:public Particle {
 	Mix_Chunk *sample;
 	public:
 	MyParticle(SDL_Renderer *ren,Animation *a,Mix_Chunk *newSample,SDL_Rect *src,
-	  double x,double y,double vx,double vy,double ax,double ay, double drag):
-	  Particle(ren,a,src,x,y,vx,vy,ax,ay) {
+	  double x,double y,double vx,double vy,double ax,double ay, double drag, double forwardAccel):
+	  Particle(ren,a,src,x,y,vx,vy,ax,ay, drag, forwardAccel) {
           setDrag(drag);
 		  sample=newSample;
 	}
 	void collision() {
 		Mix_PlayChannel(-1,sample,0);
 	}
+    void shoot(){
+        Mix_PlayChannel(-1, sample, 0);
+    }
 };
 
 class MyGame:public Game{	  
@@ -34,16 +37,18 @@ class MyGame:public Game{
 	Mix_Chunk *sound;
     int jx,jy;
 	public:
-	MyGame(int w=640,int h=480):Game("Stephen & Eduardo were here",w,h) {
+	MyGame(int w=1280,int h=720):Game("Stephen & Eduardo were here",w,h) {
+
 	  sound=media->readWav("media/crash.wav");
+      
       for (int i=0;i<1;i++) { 
-		 int vx=rand()%500 - 250;
-		 int vy=rand()%500 - 250;
+		 int vx=0;
+		 int vy=0;
 		 a.read(media,"media/anim1.txt");
 	//	 SDL_Texture *bitmapTex=media->read("media/obsticle.bmp");
 		 src.x=0; src.y=0;
 		 SDL_QueryTexture(a.getTexture(), NULL, NULL, &src.w, &src.h);
-         particles.push_back(new MyParticle(ren,&a,sound,&src,w/2,h/2,vx,vy,0,0, 0));
+         particles.push_back(new MyParticle(ren,&a,sound,&src,w/2,h/2,vx,vy,0,0, 0.999, 1000.0));
          particles[i]->setBound(0,0,w,h);
        }
        jx=w/2;
@@ -52,23 +57,46 @@ class MyGame:public Game{
        src.x=0; src.y=0; src.w=640; src.h=480;
 	}
 	void handleKeyUp(SDL_Event keyEvent) {
+        switch(keyEvent.key.keysym.sym){ //TODO:switch doesnt allow simultaneous key presses
+			
+			case SDLK_UP:
+				cout << "Up key released" <<endl;
+				// particles[0]->setVelocityDir(100,particles[0]->direction);
+				particles[0]->stopGoingForward();
+
+			break;
+
+			case SDLK_DOWN:
+				cout << "Down key released" <<endl;
+
+			break;
+
+			// case SDLK_LEFT:
+			// 	cout << "Left key released" <<endl;
+			// 	particles[0]->rotate(-1*(M_PI_4 / 4.0));
+			// break;
+
+			// case SDLK_RIGHT:
+			// 	cout << "Right key released" <<endl;
+			// 	particles[0]->rotate(M_PI_4 / 4.0);
+			// break;
+		}
+
 	}
 	void handleKeyDown(SDL_Event keyEvent) {
-		//cout << "KeyPress" << endl;
-		// if (keyEvent.key.keysym.sym==SDLK_SPACE){
-        // }
-
+		
         switch(keyEvent.key.keysym.sym){ //TODO:switch doesnt allow simultaneous key presses
             case SDLK_UP:
                 cout << "Up key pressed" <<endl;
-		        particles[0]->setVelocityDir(100,particles[0]->direction);
-      		    particles[0]->setVelocityDir(100,(particles[0]->direction + M_PI));//TODO: fix these flipped
+		        // particles[0]->setVelocityDir(100,particles[0]->direction);
+      		    particles[0]->goForward();
+				  //setAccelerationDir(1000,(particles[0]->direction));
 
             break;
 
             case SDLK_DOWN:
                 cout << "Down key pressed" <<endl;
-      		    particles[0]->setVelocityDir(100,(particles[0]->direction));
+      		    // particles[0]->setAccelerationDir(1000,(particles[0]->direction + M_PI));
 
             break;
 
@@ -82,6 +110,9 @@ class MyGame:public Game{
 			    particles[0]->rotate(M_PI_4 / 4.0);
             break;
 
+            case SDLK_SPACE:
+                //particles[0]->shoot();
+			break;
 
         }
 	}
