@@ -39,7 +39,7 @@ class MyGame:public Game{
 	public:
 	MyGame(int w=1280,int h=720):Game("Stephen & Eduardo were here",w,h) {
 
-	  sound=media->readWav("media/crash.wav");
+	  sound=media->readWav("media/laser-gun.wav");
       
       for (int i=0;i<1;i++) { 
 		 int vx=0;
