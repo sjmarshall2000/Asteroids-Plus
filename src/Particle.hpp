@@ -135,12 +135,12 @@ class Particle {
     }
 
 	  vx+=ax*dt;
-    vx *= drag;
+    vx *= drag * (1-dt);
       // if(vx > drag){vx -= drag * vx;}else if(vx < -1 * drag * vx){vx+=drag;}
     
     
     vy+=ay*dt;// - drag; 
-    vy *= drag;
+    vy *= drag * (1-dt);
     // if(vy > drag){vy -= drag * vy;}else if(vy < -1 * drag * vy){vy+=drag;}
 	  
     
