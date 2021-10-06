@@ -7,6 +7,7 @@ using namespace std;
 class AnimationFrame{
 	SDL_Texture *frame;
 	int millis;
+	
 	public:
 	void init(SDL_Texture *newFrame,int newMillis=100) {
 		frame=newFrame;
@@ -25,7 +26,10 @@ class Animation{
 	vector<AnimationFrame*> frames;
 	int totalTime;
 	int currentTime;
+	int currentFrame;
 	public:
+	bool staticAnimation;
+
 	Animation() { 
 	  totalTime=0;
 	  currentTime=0;
@@ -54,16 +58,23 @@ class Animation{
 	//	cout << "Total Time " << totalTime << endl;
 		currentTime%=totalTime;
 	}
+	void setFrame(int frameIndex){
+		currentFrame = frameIndex;
+	}
 	SDL_Texture *getTexture() {
-		int checkTime=0;
-		int t=0;
-		for (t=0;t<frames.size();t++) {
-			if (checkTime+frames[t]->getMillis()>currentTime) 
-			  break;
-			checkTime+=frames[t]->getMillis();
+		if(!staticAnimation){
+			int checkTime=0;
+			int t=0;
+			for (t=0;t<frames.size();t++) {
+				if (checkTime+frames[t]->getMillis()>currentTime) 
+				break;
+				checkTime+=frames[t]->getMillis();
+			}
+			if (t==frames.size()) t=0;
+			return frames[t]->getTexture();
+		}else{
+			return frames[currentFrame % frames.size()]->getTexture();
 		}
-		if (t==frames.size()) t=0;
-		return frames[t]->getTexture();
 	}
 	~Animation() {
 		for (auto f:frames) 

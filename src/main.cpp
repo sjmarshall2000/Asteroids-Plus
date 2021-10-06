@@ -17,8 +17,9 @@ class MyParticle:public Particle {
 	Mix_Chunk *sample;
 	public:
 	MyParticle(SDL_Renderer *ren,Animation *a,Mix_Chunk *newSample,SDL_Rect *src,
-	  double x,double y,double vx,double vy,double ax,double ay):
+	  double x,double y,double vx,double vy,double ax,double ay, double drag):
 	  Particle(ren,a,src,x,y,vx,vy,ax,ay) {
+          setDrag(drag);
 		  sample=newSample;
 	}
 	void collision() {
@@ -33,16 +34,16 @@ class MyGame:public Game{
 	Mix_Chunk *sound;
     int jx,jy;
 	public:
-	MyGame(int w=640,int h=480):Game("Karl was here",w,h) {
+	MyGame(int w=640,int h=480):Game("Stephen & Eduardo were here",w,h) {
 	  sound=media->readWav("media/crash.wav");
-      for (int i=0;i<16;i++) { 
+      for (int i=0;i<1;i++) { 
 		 int vx=rand()%500 - 250;
 		 int vy=rand()%500 - 250;
 		 a.read(media,"media/anim1.txt");
 	//	 SDL_Texture *bitmapTex=media->read("media/obsticle.bmp");
 		 src.x=0; src.y=0;
 		 SDL_QueryTexture(a.getTexture(), NULL, NULL, &src.w, &src.h);
-         particles.push_back(new MyParticle(ren,&a,sound,&src,w/2,h/2,vx,vy,0,50));
+         particles.push_back(new MyParticle(ren,&a,sound,&src,w/2,h/2,vx,vy,0,0, 0));
          particles[i]->setBound(0,0,w,h);
        }
        jx=w/2;
@@ -54,8 +55,35 @@ class MyGame:public Game{
 	}
 	void handleKeyDown(SDL_Event keyEvent) {
 		//cout << "KeyPress" << endl;
-		if (keyEvent.key.keysym.sym==SDLK_SPACE)
-		  particles[0]->incVelocity(0,-100);
+		// if (keyEvent.key.keysym.sym==SDLK_SPACE){
+        // }
+
+        switch(keyEvent.key.keysym.sym){ //TODO:switch doesnt allow simultaneous key presses
+            case SDLK_UP:
+                cout << "Up key pressed" <<endl;
+		        particles[0]->setVelocityDir(100,particles[0]->direction);
+      		    particles[0]->setVelocityDir(100,(particles[0]->direction + M_PI));//TODO: fix these flipped
+
+            break;
+
+            case SDLK_DOWN:
+                cout << "Down key pressed" <<endl;
+      		    particles[0]->setVelocityDir(100,(particles[0]->direction));
+
+            break;
+
+            case SDLK_LEFT:
+                cout << "Left key pressed" <<endl;
+			    particles[0]->rotate(-1*(M_PI_4 / 4.0));
+            break;
+
+            case SDLK_RIGHT:
+                cout << "Right key pressed" <<endl;
+			    particles[0]->rotate(M_PI_4 / 4.0);
+            break;
+
+
+        }
 	}
 	void handleButtonDown(SDL_Event joyEvent) {
 		if (joyEvent.jbutton.button==0 && joyEvent.jbutton.which==0)

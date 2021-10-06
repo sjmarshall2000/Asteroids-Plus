@@ -2,7 +2,9 @@
 
 #include <vector>
 #include <fstream>
+#include <math.h>
 #include "Animation.hpp"
+
 using namespace std;
 
 class Particle {
@@ -11,12 +13,26 @@ class Particle {
   SDL_Rect *src;
   SDL_Rect dest;
   double x,y,vx,vy,ax,ay;
+
+  double drag;
+  
+
+  
   int minx,miny,maxx,maxy;
+  
+  
   public:
-  void incVelocity(double incVx,double incVy) {
+  double direction = 0; //radians
+
+
+  void incVelocity(double incVx,double incVy ) {
 	  vx+=incVx;
 	  vy+=incVy;
   }
+  void incVelocityDir(double mag, double theta){ //calls above function with respect to angles
+    incVelocity(mag * cos(theta), mag * sin(theta));
+  }
+
   void incPosition(double incPx,double incPy) {
 	  x+=incPx;
 	  y+=incPy;
@@ -25,9 +41,15 @@ class Particle {
 	  ax+=incAx;
 	  ay+=incAy;
   }
+  void incAccelerationdDir(double mag, double theta){ //calls above function with respect to angles
+    incAcceleration(mag * cos(theta), mag * sin(theta));
+  }
   void setVelocity(double newVx,double newVy) {
 	  vx=newVx;
 	  vy=newVy;
+  }
+  void setVelocityDir(double mag, double theta){ //calls above function with respect to angles
+    setVelocity( mag * sin(theta), mag * cos(theta));
   }
   void setPosition(double newPx,double newPy) {
 	  x=newPx;
@@ -36,7 +58,23 @@ class Particle {
   void setAcceleration(double newAx,double newAy) {
 	  ax=newAx;
 	  ay=newAy;
-  }  
+  }
+  void setAccelerationDir(double mag, double theta){ //calls above function with respect to angles
+    setAcceleration(mag * cos(theta), mag * sin(theta));
+  }
+  void setDrag(double mag){
+    drag = mag;
+  }
+  void setDirection(double theta){
+    direction = theta;
+    a->setFrame(theta * (180 / M_PI) + 90);
+  }
+  void rotate(double dTheta){
+    setDirection(direction + dTheta);
+  }
+
+  
+  
   Particle(SDL_Renderer *newRen,Animation *newA, 
            SDL_Rect *newSrc,
            double newx=0.0,double newy=0.0,
@@ -45,6 +83,8 @@ class Particle {
 	  src=newSrc;
 	  ren=newRen;
 	  a=newA;
+    a->staticAnimation = true;//TODO: move this to player only
+    a->setFrame(direction * (180 / M_PI));
 	  dest.w=src->w;
       dest.h=src->h;
       dest.x=newx;
@@ -74,8 +114,12 @@ class Particle {
 		  if (y<=miny) { vy=-vy; y=miny; collision();}
 		  if (y>=maxy) { vy=-vy; y=maxy; collision();}
       }
-	  vx+=ax*dt; vy+=ay*dt; 
-	  x+=vx*dt;  y+=vy*dt;
+	  vx+=ax*dt;
+    if(vx > 0){vx -= drag;}else{vx+=drag;}
+    vy+=ay*dt; 
+    if(vy > 0){vy -= drag;}else{vy+=drag;}
+	  x+=vx*dt;
+    y+=vy*dt;
 	  dest.x=(int)x;
       dest.y=(int)y;
       a->update(dt);
