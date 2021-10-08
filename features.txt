@@ -1,0 +1,22 @@
+Cross-Platform:
+	Two Platforms, one makefile, one github repo
+	- several different imports, settled on system that required no src code change
+
+Media:
+	Custom images / sound
+	Custom animation style using arbitrary frame selection
+	Python script to autogenerate rotated images
+
+Particle Physics:
+	expanded Velocity, Acceleration, Position functions to be directional
+	incorporated logarithmic drag function
+	- acceleration-based movement
+	- real-world terminal velocity tunable and self-limiting
+	- framerate independent calculations
+	Handling of simultaneous input despite missing n-key rollover
+	
+
+Environment:
+	custom (very simple) background image
+	loop-around on all edges (simultaneously)
+	- compared and matched original game loop thresholds
