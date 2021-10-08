@@ -37,7 +37,7 @@ class MyGame:public Game{
 	Mix_Chunk *sound;
     int jx,jy;
 	public:
-	MyGame(int w=1280,int h=720):Game("Stephen & Eduardo were here",w,h) {
+	MyGame(int w=1280,int h=720):Game("Asteroids+",w,h) {
 
 	  sound=media->readWav("media/laser-gun.wav");
       
