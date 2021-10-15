@@ -1,0 +1,5 @@
+make --dry-run --keep-going --print-directory
+make: Entering directory '/home/cado/Desktop/Asteroids-Plus'
+g++ src/main.cpp -o bin/game.o -I/usr/include/SDL2  -D_REENTRANT -lSDL2 -lSDL2_mixer
+make: Leaving directory '/home/cado/Desktop/Asteroids-Plus'
+ 
