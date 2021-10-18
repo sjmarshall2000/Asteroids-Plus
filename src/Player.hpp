@@ -10,6 +10,12 @@ class Player : public Particle {
     //
     SDL_KeyCode moveKeys[4] = {SDLK_UP, SDLK_DOWN, SDLK_LEFT, SDLK_RIGHT};
 
+public:
+
+    // Player(){
+    //     //a->staticAnimation = true; //calling change direction or rotate sets this to true
+
+    // }
 
 
 

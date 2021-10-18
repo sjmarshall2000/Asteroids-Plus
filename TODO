@@ -13,4 +13,6 @@ Next Steps:
 make rotational acceleration & drag
 add text to screen
 
+look into gfx library SDL_rotate
+
 shooting

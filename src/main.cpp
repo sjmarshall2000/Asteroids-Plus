@@ -41,7 +41,7 @@ class MyGame:public Game{
 
 	  sound=media->readWav("media/laser-gun.wav");
       
-      for (int i=0;i<1;i++) { 
+      for (int i=0;i<1;i++) { //TODO: This is a stupid, stupid little hackjob to get one player, need to move this to Player.hpp
 		 int vx=0;
 		 int vy=0;
 		 a.read(media,"media/anim1.txt");

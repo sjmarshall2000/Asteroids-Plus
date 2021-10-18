@@ -23,8 +23,19 @@ class Particle {
   
   
   public:
+
   double direction = 0; //radians
 
+
+
+  /*Public Functions to Manage Movement 
+   *
+   *Almost every Function has a rectilinear (X,Y)
+   * & a directional (Magnitude, Theta) calling method
+   * 
+   * 
+   * 
+   */
 
   void incVelocity(double incVx,double incVy ) {
 	  vx+=incVx;
@@ -68,6 +79,7 @@ class Particle {
   }
   void setDirection(double theta){
     direction = theta;
+    a->staticAnimation = true;
     a->setFrame(theta * (180 / M_PI) + 90);
   }
   void rotate(double dTheta){
@@ -91,7 +103,7 @@ class Particle {
 	  src=newSrc;
 	  ren=newRen;
 	  a=newA;
-    a->staticAnimation = true;//TODO: move this to player only
+    // a->staticAnimation = true;//TODO: move this to player only
     a->setFrame(direction * (180 / M_PI));
 	  dest.w=src->w;
       dest.h=src->h;
@@ -116,7 +128,7 @@ class Particle {
   virtual void collision() {
   }
   void update(double dt) {
-    int spritewidth = 32;
+    int spritewidth = dest.w;
     int half = spritewidth / 2;
 
 	  if (maxx!=minx) {
