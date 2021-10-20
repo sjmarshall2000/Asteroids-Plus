@@ -13,7 +13,7 @@
 
 using namespace std;
 
-class MyParticle:public Particle {
+class MyParticle:public Particle {//TODO: merge MyParticle and Player
 	Mix_Chunk *sample;
 	public:
 	MyParticle(SDL_Renderer *ren,Animation *a,Mix_Chunk *newSample,SDL_Rect *src,
@@ -59,6 +59,7 @@ class MyGame:public Game{
 	void handleKeyUp(SDL_Event keyEvent) {
         switch(keyEvent.key.keysym.sym){ //TODO:switch doesnt allow simultaneous key presses
 			
+			case SDLK_w:
 			case SDLK_UP:
 				cout << "Up key released" <<endl;
 				// particles[0]->setVelocityDir(100,particles[0]->direction);
@@ -66,6 +67,7 @@ class MyGame:public Game{
 
 			break;
 
+			case SDLK_s:
 			case SDLK_DOWN:
 				cout << "Down key released" <<endl;
 
@@ -86,7 +88,8 @@ class MyGame:public Game{
 	void handleKeyDown(SDL_Event keyEvent) {
 		
         switch(keyEvent.key.keysym.sym){ //TODO:switch doesnt allow simultaneous key presses
-            case SDLK_UP:
+            case SDLK_w:
+			case SDLK_UP:
                 cout << "Up key pressed" <<endl;
 		        // particles[0]->setVelocityDir(100,particles[0]->direction);
       		    particles[0]->goForward();
@@ -94,17 +97,20 @@ class MyGame:public Game{
 
             break;
 
+			case SDLK_s:
             case SDLK_DOWN:
                 cout << "Down key pressed" <<endl;
       		    // particles[0]->setAccelerationDir(1000,(particles[0]->direction + M_PI));
 
             break;
-
+			
+			case SDLK_a:
             case SDLK_LEFT:
                 cout << "Left key pressed" <<endl;
 			    particles[0]->rotate(-1*(M_PI_4 / 4.0));
             break;
-
+			
+			case SDLK_d:	
             case SDLK_RIGHT:
                 cout << "Right key pressed" <<endl;
 			    particles[0]->rotate(M_PI_4 / 4.0);
