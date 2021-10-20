@@ -10,9 +10,48 @@ want:
 
 Next Steps:
 
+get comfy with branches asap, it's good for us
+TIMELINE: 
+end of week of 10/17: ready to go, good with branches
+week of 10/24: ready to get working on it
+
+!Make the makefile create the bin folder if it doesnt already exist!
+
+Move MyParticle to Player.hpp
+ - move controls somwhere better than main
+ - 
+
 make rotational acceleration & drag
+ - press and release trigger 'start rotation' and 'stop rotation' respectively
+ - rotation is not in chunks, it's continuous, smooth
+
+
 add text to screen
+ - timer counting up 
+ - score for everything hit / score for time
 
 look into gfx library SDL_rotate
 
+spawn random asteroids, moving at constant velocities
+
 shooting
+ - shots disappear after certain distance / time
+ - how to make sure they dont hit you? what do we check for collisions?
+
+UFOs
+ - spawn in
+ - move towards you, shoot at random intervals
+
+###################
+ NEW addition:
+###################
+ - powerups
+    -positive
+    -negative
+    -mystery
+
+- shop (timed events - things that happen at a certain time)
+ - maybe currency, maybe spend a health point, maybe lose a powerup for somethin else
+
+
+ - retry screen (take some handicap)
