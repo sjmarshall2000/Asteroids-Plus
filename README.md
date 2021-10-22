@@ -20,4 +20,3 @@ Initial work done by Stephen Marshall and Eduardo Meraz
  - `make osx`
 
 
-Testing Branch (Jackson)
