@@ -18,3 +18,5 @@ Initial work done by Stephen Marshall and Eduardo Meraz
  - `brew install sl2_mixer`
 3. Build for OSX:
  - `make osx`
+
+Brought from branch
