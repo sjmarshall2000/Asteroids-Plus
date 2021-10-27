@@ -34,7 +34,7 @@ class MyParticle:public Particle {//TODO: merge MyParticle and Player
 class MyGame:public Game{	  
     SDL_Rect src;
     vector<Particle *> particles;
-    Animation a,b,t1,t2;
+    Animation a,b,t1;
 	Mix_Chunk *sound;
     int jx,jy;
 	public:
@@ -58,13 +58,8 @@ class MyGame:public Game{
 	   t1.read(media,"media/timerOnes.txt");
 	   src.x=0; src.y=0;
 	   SDL_QueryTexture(t1.getTexture(), NULL, NULL, &src.w, &src.h);
-       particles.push_back(new MyParticle(ren,&t1,sound,&src,100,0,0,0,0,0, 0, 0));
+       particles.push_back(new MyParticle(ren,&t1,sound,&src,0,0,0,0,0,0, 0, 0));
        particles[1]->setBound(0,0,w,h);
-	   t1.read(media,"media/timerTens.txt");
-	   src.x=0; src.y=0;
-	   SDL_QueryTexture(t2.getTexture(), NULL, NULL, &src.w, &src.h);
-       particles.push_back(new MyParticle(ren,&t2,sound,&src,0,0,0,0,0,0, 0, 0));
-       particles[2]->setBound(0,0,w,h);
        b.read(media,"media/background.txt");
        src.x=0; src.y=0; src.w=640; src.h=480;
 	}
