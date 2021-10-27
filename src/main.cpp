@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include <vector>
 #include <map>
 #include "Exception.hpp"
@@ -33,7 +34,7 @@ class MyParticle:public Particle {//TODO: merge MyParticle and Player
 class MyGame:public Game{	  
     SDL_Rect src;
     vector<Particle *> particles;
-    Animation a,b;
+    Animation a,b,c;
 	Mix_Chunk *sound;
     int jx,jy;
 	public:
@@ -53,6 +54,12 @@ class MyGame:public Game{
        }
        jx=w/2;
        jy=w/2;
+	   c.read(media,"media/timer.txt");
+	   src.x=0; src.y=0;
+	   SDL_QueryTexture(c.getTexture(), NULL, NULL, &src.w, &src.h);
+       particles.push_back(new MyParticle(ren,&c,sound,&src,w/2,h/2,0,0,0,0, 0, 0));
+       particles[1]->setBound(0,0,w,h);
+	   // LET IT BE KNOWN: Particle 0 = Player; Particle 1 = Timer
        b.read(media,"media/background.txt");
        src.x=0; src.y=0; src.w=640; src.h=480;
 	}
