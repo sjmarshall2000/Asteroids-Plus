@@ -34,7 +34,7 @@ class MyParticle:public Particle {//TODO: merge MyParticle and Player
 class MyGame:public Game{	  
     SDL_Rect src;
     vector<Particle *> particles;
-    Animation a,b,t1;
+    Animation a,b;
 	Mix_Chunk *sound;
     int jx,jy;
 	public:
@@ -54,12 +54,19 @@ class MyGame:public Game{
        }
        jx=w/2;
        jy=w/2;
-	   // LET IT BE KNOWN: Particle 0 = Player; Particle 1 = Timer
-	   t1.read(media,"media/timerOnes.txt");
-	   src.x=0; src.y=0;
-	   SDL_QueryTexture(t1.getTexture(), NULL, NULL, &src.w, &src.h);
-       particles.push_back(new MyParticle(ren,&t1,sound,&src,0,0,0,0,0,0, 0, 0));
-       particles[1]->setBound(0,0,w,h);
+
+		TTF_Init();
+		TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 24);
+		SDL_Color White = {255, 255, 255};
+		SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "testing", White); 
+		SDL_Texture* Message = SDL_CreateTextureFromSurface(ren, surfaceMessage);
+		SDL_Rect Message_rect; 
+		Message_rect.x = 0;  
+		Message_rect.y = 0; 
+		Message_rect.w = 100;
+		Message_rect.h = 100;
+		SDL_RenderCopy(ren, Message, NULL, &Message_rect);
+
        b.read(media,"media/background.txt");
        src.x=0; src.y=0; src.w=640; src.h=480;
 	}

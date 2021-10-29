@@ -6,7 +6,7 @@ LINUXFLAGS = -I/usr/include/SDL2
 OSXFLAGS = -I/usr/local/Cellar/
 WINDOWSFLAGS = TODO
 SDL2CFLAGS=-D_REENTRANT
-SDL2LIBS=-lSDL2 -lSDL2_mixer
+SDL2LIBS=-lSDL2 -lSDL2_mixer -lSDL2_ttf
 INCLUDES=include/useful.h
 
 # BIN: $(MAINSRC)
