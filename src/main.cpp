@@ -11,6 +11,7 @@
 #include "MediaManager.hpp"
 #include "Game.hpp"
 #include "Particle.hpp"
+#include "Text.hpp"
 
 using namespace std;
 
@@ -36,12 +37,15 @@ class MyGame:public Game{
     vector<Particle *> particles;
     Animation a,b;
 	Mix_Chunk *sound;
+	SDL_Color White;
     int jx,jy;
 	public:
 	MyGame(int w=1280,int h=720):Game("Asteroids+",w,h) {
 
 	  sound=media->readWav("media/laser-gun.wav");
-      
+      TTF_Init();
+	  SDL_Color White = { .r = 255, .g = 255, .b = 255};
+
       for (int i=0;i<1;i++) { //TODO: This is a stupid, stupid little hackjob to get one player, need to move this to Player.hpp
 		 int vx=0;
 		 int vy=0;
@@ -54,19 +58,6 @@ class MyGame:public Game{
        }
        jx=w/2;
        jy=w/2;
-
-		TTF_Init();
-		TTF_Font* Sans = TTF_OpenFont("Sans.ttf", 24);
-		SDL_Color White = {255, 255, 255};
-		SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, "testing", White); 
-		SDL_Texture* Message = SDL_CreateTextureFromSurface(ren, surfaceMessage);
-		SDL_Rect Message_rect; 
-		Message_rect.x = 0;  
-		Message_rect.y = 0; 
-		Message_rect.w = 100;
-		Message_rect.h = 100;
-		SDL_RenderCopy(ren, Message, NULL, &Message_rect);
-
        b.read(media,"media/background.txt");
        src.x=0; src.y=0; src.w=640; src.h=480;
 	}
@@ -150,6 +141,8 @@ class MyGame:public Game{
 	void update(double dt) {
       SDL_RenderClear(ren);
       b.update(dt);
+
+	  textOnScreen(ren, "test", White);
       
       SDL_RenderCopy(ren, b.getTexture(), &src, &src);
       for (unsigned i=0;i<particles.size();i++) 
