@@ -12,11 +12,16 @@ class Particle {
   Animation  *a;
   SDL_Rect *src;
   SDL_Rect dest;
-  double x,y,vx,vy,ax,ay;
+  double x,y,vx,vy,ax,ay,omega,alpha;
+  //omega = angular velocity
+  //alpha = angular acceleration
 
   double drag;
   double forwardAccel;
+  double turnAccel;
   bool isMovingForward = false;
+  bool isTurningRight = false;
+  bool isTurningLeft = false;
 
   
   int minx,miny,maxx,maxy;
@@ -30,11 +35,11 @@ class Particle {
 
   /*Public Functions to Manage Movement 
    *
-   *Almost every Function has a rectilinear (X,Y)
+   * Almost every Function has a rectilinear (X,Y)
    * & a directional (Magnitude, Theta) calling method
    * 
-   * 
-   * 
+   * Rotational functions are also provided for turning
+   * e.g. angular Velocity & Acceleration
    */
 
   void incVelocity(double incVx,double incVy ) {
@@ -63,6 +68,9 @@ class Particle {
   void setVelocityDir(double mag, double theta){ //calls above function with respect to angles
     setVelocity( mag * sin(theta), mag * cos(theta));
   }
+  void setAngularVelocity(double mag){
+    omega = mag;
+  }
   void setPosition(double newPx,double newPy) {
 	  x=newPx;
 	  y=newPy;
@@ -70,6 +78,9 @@ class Particle {
   void setAcceleration(double newAx,double newAy) {
 	  ax=newAx;
 	  ay=newAy;
+  }
+  void setAngularAcceleration(double mag){
+    alpha = mag;
   }
   void setAccelerationDir(double mag, double theta){ //calls above function with respect to angles
     setAcceleration(mag * cos(theta), mag * sin(theta));
@@ -91,6 +102,20 @@ class Particle {
   void stopGoingForward(){
     isMovingForward = false;
   }
+  void turnRight(){
+    isTurningRight = true;
+    isTurningLeft = false;
+  }
+  void turnLeft(){
+    isTurningRight = false;
+    isTurningLeft = true;
+  }
+  void stopTurningRight(){
+    isTurningRight = false;
+  }
+  void stopTurningLeft(){
+    isTurningLeft = false;
+  }
 
   
   
@@ -99,7 +124,7 @@ class Particle {
            double newx=0.0,double newy=0.0,
            double newvx=0.0,double newvy=0.0,
            double newax=0.0,double neway=0.0, 
-           double newdrag=0.0, double newforwardaccel=0.0) {
+           double newdrag=0.0, double newforwardaccel=0.0, double newTurnAccel=0.0) {
 	  src=newSrc;
 	  ren=newRen;
 	  a=newA;
@@ -117,6 +142,7 @@ class Particle {
       ay=neway;  // px/s/s
       drag=newdrag;
       forwardAccel = newforwardaccel;
+      turnAccel=newTurnAccel;
       setBound();
   }
   void setBound(int newMinX=0,int newMinY=0,int newMaxX=0,int newMaxY=0) {
@@ -146,21 +172,38 @@ class Particle {
       setAccelerationDir(0, direction);
     }
 
+    if(isTurningRight){
+      setAngularAcceleration(turnAccel);
+    } else if(isTurningLeft){
+      setAngularAcceleration(-1.0 * turnAccel);
+    } else {
+      setAngularAcceleration(0);
+    }
+
+    //Time-dependent transformations:
+
+    //Velocity X
 	  vx+=ax*dt;
     vx *= drag * (1-dt);
-      // if(vx > drag){vx -= drag * vx;}else if(vx < -1 * drag * vx){vx+=drag;}
-    
-    
+    //Velocity Y
     vy+=ay*dt;// - drag; 
     vy *= drag * (1-dt);
-    // if(vy > drag){vy -= drag * vy;}else if(vy < -1 * drag * vy){vy+=drag;}
-	  
-    
+	  //Angular velocity
+    omega += alpha*dt;
+    omega *= drag * (1-dt); //we want more angular drag
+    omega *= drag * (1-dt);
+    //Position
     x+=vx*dt;
     y+=vy*dt;
+    //Angle
+    direction += omega*dt;
+    cout << "direction:"<<direction<< "\tomega:"<<omega<<"\talpha:"<<alpha<< endl;
+
+    //update simulation model:
 	  dest.x=(int)x;
-      dest.y=(int)y;
-      a->update(dt);
-      SDL_RenderCopy(ren, a->getTexture(), src, &dest);
+    dest.y=(int)y;
+    setDirection(direction);
+    a->update(dt);
+    SDL_RenderCopy(ren, a->getTexture(), src, &dest);
   }
 };

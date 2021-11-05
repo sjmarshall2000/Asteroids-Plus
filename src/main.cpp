@@ -17,8 +17,8 @@ class MyParticle:public Particle {//TODO: merge MyParticle and Player
 	Mix_Chunk *sample;
 	public:
 	MyParticle(SDL_Renderer *ren,Animation *a,Mix_Chunk *newSample,SDL_Rect *src,
-	  double x,double y,double vx,double vy,double ax,double ay, double drag, double forwardAccel):
-	  Particle(ren,a,src,x,y,vx,vy,ax,ay, drag, forwardAccel) {
+	  double x,double y,double vx,double vy,double ax,double ay, double drag, double forwardAccel,double turnAccel):
+	  Particle(ren,a,src,x,y,vx,vy,ax,ay, drag, forwardAccel, turnAccel) {
           setDrag(drag);
 		  sample=newSample;
 	}
@@ -48,7 +48,7 @@ class MyGame:public Game{
 	//	 SDL_Texture *bitmapTex=media->read("media/obsticle.bmp");
 		 src.x=0; src.y=0;
 		 SDL_QueryTexture(a.getTexture(), NULL, NULL, &src.w, &src.h);
-         particles.push_back(new MyParticle(ren,&a,sound,&src,w/2,h/2,vx,vy,0,0, 0.999, 1000.0));
+         particles.push_back(new MyParticle(ren,&a,sound,&src,w/2,h/2,vx,vy,0,0, 0.999, 1000.0, 30.0	));
          particles[i]->setBound(0,0,w,h);
        }
        jx=w/2;
@@ -73,15 +73,17 @@ class MyGame:public Game{
 
 			break;
 
-			// case SDLK_LEFT:
-			// 	cout << "Left key released" <<endl;
-			// 	particles[0]->rotate(-1*(M_PI_4 / 4.0));
-			// break;
+			case SDLK_a:
+			case SDLK_LEFT:
+				particles[0]->stopTurningLeft();
+				cout <<"Left key released" << endl;
+				break;
 
-			// case SDLK_RIGHT:
-			// 	cout << "Right key released" <<endl;
-			// 	particles[0]->rotate(M_PI_4 / 4.0);
-			// break;
+			case SDLK_d:
+			case SDLK_RIGHT:
+				particles[0]->stopTurningRight();
+				cout << "Right key released" << endl;
+				break;
 		}
 
 	}
@@ -107,13 +109,13 @@ class MyGame:public Game{
 			case SDLK_a:
             case SDLK_LEFT:
                 cout << "Left key pressed" <<endl;
-			    particles[0]->rotate(-1*(M_PI_4 / 4.0));
+			    particles[0]->turnLeft();//rotate(-1*(M_PI_4 / 4.0));
             break;
 			
 			case SDLK_d:	
             case SDLK_RIGHT:
                 cout << "Right key pressed" <<endl;
-			    particles[0]->rotate(M_PI_4 / 4.0);
+			    particles[0]->turnRight();//rotate(M_PI_4 / 4.0);
             break;
 
             case SDLK_SPACE:
