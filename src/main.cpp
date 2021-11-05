@@ -37,14 +37,12 @@ class MyGame:public Game{
     vector<Particle *> particles;
     Animation a,b;
 	Mix_Chunk *sound;
-	SDL_Color White;
     int jx,jy;
 	public:
 	MyGame(int w=1280,int h=720):Game("Asteroids+",w,h) {
 
 	  sound=media->readWav("media/laser-gun.wav");
       TTF_Init();
-	  SDL_Color White = { .r = 255, .g = 255, .b = 255};
 
       for (int i=0;i<1;i++) { //TODO: This is a stupid, stupid little hackjob to get one player, need to move this to Player.hpp
 		 int vx=0;
@@ -141,10 +139,9 @@ class MyGame:public Game{
 	void update(double dt) {
       SDL_RenderClear(ren);
       b.update(dt);
-
-	  textOnScreen(ren, "test", White);
       
       SDL_RenderCopy(ren, b.getTexture(), &src, &src);
+	  textOnScreen(ren, b.getTime());
       for (unsigned i=0;i<particles.size();i++) 
         particles[i]->update(dt);
       SDL_RenderPresent(ren);

@@ -2,6 +2,8 @@
 
 #include <vector>
 #include <fstream>
+#include <cstring>
+#include <string>
 using namespace std;
 
 class AnimationFrame{
@@ -79,6 +81,14 @@ class Animation{
 	~Animation() {
 		for (auto f:frames) 
 		  delete f;
+	}
+
+	const char getTime() {
+		int tempint = currentTime;
+		string tempstr;
+		tempstr = to_string(tempint);
+		char const textTime = *tempstr.c_str();
+		return textTime;
 	}
 };
 
