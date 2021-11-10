@@ -9,9 +9,10 @@
 
 using namespace std;
 
+void SDL_Delay(Uint32 ms);
+
 void textOnScreen(SDL_Renderer *ren){
     string currentTime = to_string(SDL_GetTicks() / 1000);
-    cout << currentTime << endl;
     const char *text = currentTime.c_str();
     TTF_Font* Sans = TTF_OpenFont("src/OpenSans-Regular.ttf", 24);
     SDL_Color White = {255, 255, 255};
