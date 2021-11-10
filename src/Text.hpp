@@ -10,10 +10,7 @@
 using namespace std;
 
 void textOnScreen(SDL_Renderer *ren){
-    int tempSec = SDL_GetTicks() / 1000;
-    int tempMin = 0;
-    if ()
-    string currentTime = to_string();
+    string currentTime = to_string(SDL_GetTicks() / 1000);
     cout << currentTime << endl;
     const char *text = currentTime.c_str();
     TTF_Font* Sans = TTF_OpenFont("src/OpenSans-Regular.ttf", 24);
