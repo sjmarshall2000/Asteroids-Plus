@@ -4,12 +4,14 @@
 #include <iostream>
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
+#include <SDL2/SDL_ttf.h>
 #include <vector>
 #include <map>
 #include "Exception.hpp"
 #include "MediaManager.hpp"
 #include "Game.hpp"
 #include "Particle.hpp"
+#include "Text.hpp"
 
 using namespace std;
 
@@ -40,7 +42,8 @@ class MyGame:public Game{
 	MyGame(int w=1280,int h=720):Game("Asteroids+",w,h) {
 
 	  sound=media->readWav("media/laser-gun.wav");
-      
+      TTF_Init();
+
       for (int i=0;i<1;i++) { //TODO: This is a stupid, stupid little hackjob to get one player, need to move this to Player.hpp
 		 int vx=0;
 		 int vy=0;
@@ -140,6 +143,7 @@ class MyGame:public Game{
       b.update(dt);
       
       SDL_RenderCopy(ren, b.getTexture(), &src, &src);
+	  textOnScreen(ren);
       for (unsigned i=0;i<particles.size();i++) 
         particles[i]->update(dt);
       SDL_RenderPresent(ren);
