@@ -8,6 +8,7 @@ Initial work done by Stephen Marshall and Eduardo Meraz
 1. Install sdl2 and sdl2_mixer:
  - `sudo apt install libsdl2-2.0-0`
  - `sudo apt install libsdl2-2.0-0`
+ - `sudo apt install libsdl2-ttf-dev`
 2. Build for Linux:
  - `make linux`
 
