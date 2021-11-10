@@ -10,9 +10,9 @@
 
 using namespace std;
 
-class Particle {
+class Asteroid {
   SDL_Renderer *ren;
-  Animation  *ast;
+  Animation  *small, *big;
   SDL_Rect *src;
   SDL_Rect dest;
   double x,y,vx,vy,ax,ay;
@@ -30,16 +30,9 @@ class Particle {
   void rotate(double dTheta){
     setDirection(direction + dTheta);
   }
-  void goForward(){
-    isMovingForward = true;
-  }
-  void stopGoingForward(){
-    isMovingForward = false;
-  }
-
   
   
-  Particle(SDL_Renderer *newRen,Animation *newA, 
+  Asteroid(SDL_Renderer *newRen,Animation *newA, 
            SDL_Rect *newSrc,
            double newx=0.0,double newy=0.0,
            double newvx=0.0,double newvy=0.0,
