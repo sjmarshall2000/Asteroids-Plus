@@ -141,7 +141,7 @@ class MyGame:public Game{
       b.update(dt);
       
       SDL_RenderCopy(ren, b.getTexture(), &src, &src);
-	  textOnScreen(ren, b.getTime());
+	  textOnScreen(ren);
       for (unsigned i=0;i<particles.size();i++) 
         particles[i]->update(dt);
       SDL_RenderPresent(ren);

@@ -9,8 +9,13 @@
 
 using namespace std;
 
-void textOnScreen(SDL_Renderer *ren, char temp){
-    const char *text = &temp;
+void textOnScreen(SDL_Renderer *ren){
+    int tempSec = SDL_GetTicks() / 1000;
+    int tempMin = 0;
+    if ()
+    string currentTime = to_string();
+    cout << currentTime << endl;
+    const char *text = currentTime.c_str();
     TTF_Font* Sans = TTF_OpenFont("src/OpenSans-Regular.ttf", 24);
     SDL_Color White = {255, 255, 255};
     SDL_Surface* surfaceMessage = TTF_RenderText_Solid(Sans, text, White); 

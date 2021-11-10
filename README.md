@@ -16,5 +16,6 @@ Initial work done by Stephen Marshall and Eduardo Meraz
 2. Install sdl2 and sdl2_mixer:
  - `brew install sdl2`
  - `brew install sl2_mixer`
+ - `brew install sdl2_ttf`
 3. Build for OSX:
  - `make osx`

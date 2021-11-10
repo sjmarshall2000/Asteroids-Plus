@@ -83,12 +83,12 @@ class Animation{
 		  delete f;
 	}
 
-	const char getTime() {
-		int tempint = currentTime;
-		string tempstr;
-		tempstr = to_string(tempint);
-		char const textTime = *tempstr.c_str();
-		return textTime;
-	}
+	// const char getTime() {
+	// 	int tempint = currentTime;
+	// 	string tempstr;
+	// 	tempstr = to_string(tempint);
+	// 	char const textTime = *tempstr.c_str();
+	// 	return textTime;
+	// }
 };
 
