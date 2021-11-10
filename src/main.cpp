@@ -5,8 +5,10 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_mixer.h>
 #include <vector>
+#include <random>
 #include <map>
 #include "Exception.hpp"
+#include "Asteroids.hpp"
 #include "MediaManager.hpp"
 #include "Game.hpp"
 #include "Particle.hpp"
@@ -33,7 +35,7 @@ class MyParticle:public Particle {//TODO: merge MyParticle and Player
 class MyGame:public Game{	  
     SDL_Rect src;
     vector<Particle *> particles;
-    Animation a,b;
+    Animation a,b,small,big;
 	Mix_Chunk *sound;
     int jx,jy;
 	public:
@@ -45,11 +47,14 @@ class MyGame:public Game{
 		 int vx=0;
 		 int vy=0;
 		 a.read(media,"media/anim1.txt");
+		 small.read(media,"media/ast1.txt");
+		
 	//	 SDL_Texture *bitmapTex=media->read("media/obsticle.bmp");
 		 src.x=0; src.y=0;
 		 SDL_QueryTexture(a.getTexture(), NULL, NULL, &src.w, &src.h);
          particles.push_back(new MyParticle(ren,&a,sound,&src,w/2,h/2,vx,vy,0,0, 0.999, 1000.0, 30.0	));
          particles[i]->setBound(0,0,w,h);
+		 for
        }
        jx=w/2;
        jy=w/2;
